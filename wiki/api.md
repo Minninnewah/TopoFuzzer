@@ -32,7 +32,42 @@ TopoFuzzer, to distinguish private IPs from public IPs in the bidirectional mapp
     curl --location --request GET 'http://<topofuzzer_ip>:8000/api/mappings' \
     --header 'Content-Type: text/plain'
 ````
-
+Python
+```bash
+    import requests
+    url = "http://" + topofuzzer_ip + ":" + topofuzzer_port + "/api/mappings/"
+    response = requests.get(url)
+    data = response.json()
+````
 This will return everything related to TopoFuzzer: the services' public IPs and their mappings to private IPs.
+
+### POST
+```bash
+    curl --location --request POST 'http://localhost:8000/api/mappings/' --header 'Content-Type: application/json' --data-raw '{"10-161-2-102": "10.70.0.3"}'
+```
+Python
+```bash
+    import requests
+    url = "http://" + topofuzzer_ip + ":" + topofuzzer_port + "/api/mappings/"
+    payload = {
+            public_ip: private_ip #For example: 10_10_0_1 : 10.10.0.2
+        }
+    requests.post( url, json=payload)
+````
+
+### PUSH
+```bash
+    curl --location --request PUT 'http://localhost:8000/api/mappings/<public_IP>' --header 'Content-Type: application/json' --data-raw '{"new_ip": "10.10.0.3"}'
+```
+```bash
+    import requests
+    url = "http://" + topofuzzer_ip + ":" + topofuzzer_port + "/api/mappings/"
+    payload = {
+            "new_ip": private_ip #no encodeing like 10.10.0.3
+        }
+    requests.put( url + public_ip, json=payload) # public_ip has to be encoded like 10_10_0_1
+````
+
+
 
 
